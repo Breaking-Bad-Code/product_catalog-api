@@ -1,4 +1,3 @@
-# product_catalog-api
 # API for Product Catalog
 
 This is a RESTful API for a product catalog.
