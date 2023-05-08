@@ -1,17 +1,12 @@
 # product_catalog-api
-Product Catalog API
-This is an API for a product catalog.
+# API for Product Catalog
 
-Getting started
-To run the server, first install the dependencies:
+This is a RESTful API for a product catalog.
 
-Copy code
-npm install
-npm run start
-Runs the server using Node.js.
+## Getting Started
 
-npm run dev
-Runs the server using Nodemon, which automatically restarts the server when changes are made.
+To start the server, run:
+'npm run start'
 
-API Documentation
-API documentation is not available at this time.
+To start the server with nodemon, run:
+'npm run dev'
