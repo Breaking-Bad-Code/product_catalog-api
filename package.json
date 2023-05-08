@@ -1,0 +1,28 @@
+{
+  "name": "product_catalog-api",
+  "version": "1.0.0",
+  "description": "API for Product Catalog",
+  "main": "index.js",
+  "dependencies": {
+    "@swc/core": "^1.3.56",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  },
+  "scripts": {
+    "start": "node main.js",
+    "dev": "nodemon main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Breaking-Bad-Code/product_catalog-api.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Breaking-Bad-Code/product_catalog-api/issues"
+  },
+  "homepage": "https://github.com/Breaking-Bad-Code/product_catalog-api#readme"
+}
