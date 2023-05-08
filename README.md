@@ -13,3 +13,8 @@ To start the server with nodemon, run:
 ```sh
 npm run dev
 ```
+
+To compile TypeScript into JavaScript.
+```sh
+npm run build
+```
