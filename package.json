@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "@swc/core": "^1.3.56",
+    "cors": "^2.8.5",
     "express": "^4.18.2",
     "typescript": "^5.0.4"
   },
@@ -22,7 +23,7 @@
     "prettier": "^2.8.8"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "npx tsc",
     "start": "node build",
     "dev": "concurrently \"npx tsc --watch\" \"nodemon -q build/index.js\"",
     "lint": "eslint \"**/*.{ts,tsx}\"",
@@ -46,6 +47,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "type": "module",
   "bugs": {
     "url": "https://github.com/Breaking-Bad-Code/product_catalog-api/issues"
   },
