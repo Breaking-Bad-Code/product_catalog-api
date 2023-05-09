@@ -16,7 +16,7 @@
     "nodemon": "^2.0.22"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "npx tsc",
     "start": "node build",
     "dev": "concurrently \"npx tsc --watch\" \"nodemon -q build/index.js\""
   },
@@ -27,6 +27,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "type": "module",
   "bugs": {
     "url": "https://github.com/Breaking-Bad-Code/product_catalog-api/issues"
   },
