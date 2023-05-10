@@ -1,40 +1,12 @@
 'use strict';
 
-import express from "express";
-import path from 'path';
-import fs from 'fs';
-// const expensesController = require('../controllers/products');
-const __dirname = path.resolve();
+import express, { Router } from "express";
+import phonesController from '../controllers/phones.js';
 
-export const router = express.Router();
+export const router: Router = express.Router();
 
 router.use(express.json());
 
-router.get('/', (req, res) => {
-  const filePath = path.join(
-    __dirname,
-    'public',
-    'api',
-    'phones.json',
-  );
+router.get('/', phonesController.getPhones);
 
-  const stream = fs.createReadStream(filePath);
-
-  stream.pipe(res);
-});
-
-router.get('/:phoneId', (req, res) => {
-  const { phoneId } = req.params
-
-  const filePath = path.join(
-    __dirname,
-    'public',
-    'api',
-    'phones',
-    `${phoneId}.json`,
-  );
-
-  const stream = fs.createReadStream(filePath);
-
-  stream.pipe(res);
-});
+router.get('/:phoneId', phonesController.getFileById);
