@@ -47,7 +47,12 @@ const getPhones = (req: Request<{}, {}, {}, getPhonesQuery>, res: Response) => {
         return;
       }
 
-      res.json(phones.slice(fromValue, toValue + 1))
+      const selectedPhones = phones.slice(fromValue, toValue + 1);
+
+      res.json({
+        total: phones.length,
+        data: selectedPhones,
+      })
     }) 
     .catch(err => {
       if (err) {
@@ -71,7 +76,7 @@ const getFileById = (req: Request, res: Response) => {
   );
 
   const stream = fs.createReadStream(filePath);
-
+  
   stream.pipe(res);
 }
 
