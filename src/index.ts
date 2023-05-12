@@ -1,18 +1,18 @@
 
 
 
-import express, { Express, Request, Response } from "express";
+import express, { Express, Request, Response } from 'express';
 import cors from 'cors';
-import { router as phoneRouter } from './routers/phones.js'
+import { router as phoneRouter } from './routers/phones.js';
 
 const app: Express = express();
 
 
 const PORT = process.env.PORT || 3000;
 
-app.use(cors())
-app.use(express.static('public'))
-app.use('/phones', phoneRouter)
+app.use(cors());
+app.use(express.static('public'));
+app.use('/phones', phoneRouter);
 
 app.get('/', (req: Request, res: Response) => {
   res.send(`
