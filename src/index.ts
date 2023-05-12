@@ -18,6 +18,7 @@ app.get('/', (req: Request, res: Response) => {
   res.send(`
     <a href='/phones'>/phones</a></br>
     <a href='/phones?from=0&to=5'>/phones?from=0&to=5</a></br>
+    <a href='/phones?id=1&id=2'>/phones?id=1&id=2</a></br>
     <a href='/phones/apple-iphone-7-32gb-black'>/phones/:phoneId</a></br>
     <a href='/img/phones/apple-iphone-7/black/00.jpg'>/:imgUrl</a>
   `);

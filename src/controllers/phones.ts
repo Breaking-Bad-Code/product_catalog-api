@@ -8,10 +8,11 @@ const __dirname = path.resolve();
 interface getPhonesQuery {
   from?: string;
   to?: string;
+  id?: string | string[];
 }
 
 const getPhones = (req: Request<{}, {}, {}, getPhonesQuery>, res: Response) => {
-  const { from, to } = req.query;
+  const { from, to, id } = req.query;
   const filePath: PathLike = path.join(
     __dirname,
     'public',
@@ -19,8 +20,7 @@ const getPhones = (req: Request<{}, {}, {}, getPhonesQuery>, res: Response) => {
     'phones.json',
   );
 
-
-  if (from === undefined && to === undefined) {
+  if (from === undefined && to === undefined && id === undefined) {
       const stream = fs.createReadStream(filePath);
 
       stream.pipe(res);
@@ -28,26 +28,35 @@ const getPhones = (req: Request<{}, {}, {}, getPhonesQuery>, res: Response) => {
       return
   }
 
-  const fromValue = Number(from);
-  const toValue = Number(to);
-
-  if (isNaN(fromValue) || isNaN(toValue) || toValue < fromValue) {
-    res.sendStatus(400);
-
-    return;
-  }
+  
 
   fsPromises.readFile(filePath)
     .then(data => {
       const rawData = Buffer.from(data).toString();
       const phones: Phone[] = JSON.parse(rawData);
-      if (toValue + 1 > phones.length) {
-        res.sendStatus(400);
-        
-        return;
-      }
+      let selectedPhones: Phone[] = [];
 
-      const selectedPhones = phones.slice(fromValue, toValue + 1);
+      if (id === undefined) {
+        const fromValue = Number(from);
+        const toValue = Number(to);
+        
+        if (
+          isNaN(fromValue)
+          || isNaN(toValue)
+          || toValue < fromValue
+          || toValue + 1 > phones.length
+        ) {
+          res.sendStatus(400);
+          
+          return;
+        }
+
+        selectedPhones = phones.slice(fromValue, toValue + 1);
+      } else {
+        const ids = typeof id === 'string' ? [id] : id
+
+        selectedPhones = phones.filter(phone => ids.includes(phone.id));
+      }
 
       res.json({
         total: phones.length,
@@ -62,7 +71,6 @@ const getPhones = (req: Request<{}, {}, {}, getPhonesQuery>, res: Response) => {
       }
     });
 };
-
 
 const getFileById = (req: Request, res: Response) => {
   const { phoneId } = req.params
@@ -79,7 +87,6 @@ const getFileById = (req: Request, res: Response) => {
   
   stream.pipe(res);
 }
-
 
 export default {
     getPhones,
