@@ -2,7 +2,7 @@ import fs, { PathLike, promises as fsPromises } from 'fs';
 import { Request, Response } from 'express';
 import path from 'path';
 import { Phone } from '../types/Phone';
-import { getPostgresVersion } from '../db';
+import { getPostgresVersion } from '../db.js';
 
 const __dirname = path.resolve();
 
