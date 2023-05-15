@@ -1,6 +1,4 @@
 
-
-
 import express, { Express, Request, Response } from 'express';
 import cors from 'cors';
 import { router as phoneRouter } from './routers/phones.js';
