@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Requests</h1>
+    <h2>phones from files</h2>
+    <a href='/phones'>/phones</a></br>
+    <a href='/phones?from=0&to=5'>/phones?from=0&to=5</a></br>
+    <a href='/phones?id=1&id=2'>/phones?id=1&id=2</a></br>
+    <a href='/phones/apple-iphone-7-32gb-black'>/phones/:phoneId</a></br>
+
+    <h2>products from database</h2>
+    <a href='/products'>/products</a></br>
+    <a href='/products?from=0&to=5'>/products?from=0&to=5</a></br>
+    <a href='/products?id=apple-iphone-7-32gb-black&id=apple-iphone-11-pro-max-64gb-spacegray'>/products?id=apple-iphone-7-32gb-black&id=apple-iphone-11-pro-max-64gb-spacegray</a></br>
+    <a href='/products/apple-iphone-7-32gb-black'>/products/:productId</a></br>
+    <a href='/products/discount?productType=phones'>/products/discount?productType=phones</a></br>
+    <a href='/products/new?productType=phones'>/products/new?productType=phones</a></br>
+    <a href='/products/apple-iphone-7-32gb-black/recomended'>/products/apple-iphone-7-32gb-black/recomended</a></br>
+
+
+    <h2>Static images</h2>
+    <a href='/img/phones/apple-iphone-7/black/00.jpg'>/:imgUrl</a>
+    
+</body>
+</html>

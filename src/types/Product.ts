@@ -1,8 +1,9 @@
 import { Category } from './Category';
 
 export interface Phone {
-    id: string,
+    id: number,
     category: Category,
+    phoneId: string,
     itemId: string,
     name: string,
     fullPrice: number,
