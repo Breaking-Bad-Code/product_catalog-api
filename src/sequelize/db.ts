@@ -25,13 +25,13 @@ export const connect = async () => {
   try {
     await sequelize.authenticate();
 
-    await Product.sync();
-    await Cell.sync();
-    await Color.sync();
-    await Capacity.sync();
-    await Image.sync();
-    await Title.sync();
-    await Description.sync();
+    // await Product.sync();
+    // await Cell.sync();
+    // await Color.sync();
+    // await Capacity.sync();
+    // await Image.sync();
+    // await Title.sync();
+    // await Description.sync();
 
   } catch (error) {
     console.log(error);

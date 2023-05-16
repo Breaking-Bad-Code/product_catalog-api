@@ -1,14 +1,14 @@
-import { OrderItem } from 'sequelize';
+import { OrderItem, Sequelize } from 'sequelize';
 import { Phone } from '../../types/Phone.js';
 import { Product as ProductModel } from '../models/product.js';
 import { promises as fsPromises } from 'fs';
 import path from 'path';
 import { PhoneDetails } from '../../types/PhoneDetails.js';
-import { Cell as CellModel } from '../models/cell.js';
-import { Color as ColorModel } from '../models/color.js';
-import { Capacity as CapacityModel } from '../models/capacity.js';
-import { Image as ImageModel } from '../models/image.js';
-import { Title as TitleModel } from '../models/title.js';
+import { Cell, Cell as CellModel } from '../models/cell.js';
+import { Color, Color as ColorModel } from '../models/color.js';
+import { Capacity, Capacity as CapacityModel } from '../models/capacity.js';
+import { Image, Image as ImageModel } from '../models/image.js';
+import { Title, Title as TitleModel } from '../models/title.js';
 import { Description as DescriptionModel } from '../models/description.js';
 const __dirname = path.resolve();
 
@@ -29,10 +29,87 @@ export class ProductService {
   getProducts = async (
     order: OrderItem[],
     where: {[name: string]: string | number},
+    from: number,
+    to: number
   ): Promise<Phone[]> => {
     const products = await ProductModel.findAll({
       where,
       order,
+      limit: to - from,
+      offset: from,
+    });
+
+    return unpackData(products);
+  };
+
+  getProductById = async (
+    productId: string,
+  ): Promise<any> => {
+
+    const phone = ProductModel.findByPk(productId, {
+      // DONT WORK PROPERLY
+      // include: [
+      //   {
+      //     model: Cell,
+      //     required: false,
+      //   },
+      //   {
+      //     model: Image,
+      //     required: false,
+      //   },
+      //   {
+      //     model: Capacity,
+      //     required: false,
+      //   },
+      //   {
+      //     model: Title,
+      //     required: false,
+      //   },
+      //   {
+      //     model: Color,
+      //     required: false,
+      //   },
+      // ]
+    });
+
+    return phone;
+  };
+
+  getDiscounts = async (
+    order: OrderItem[],
+    where: {[name: string]: string | number},
+    from: number,
+    to: number,
+  ): Promise<Phone[]> => {
+    const products = await ProductModel.findAll({
+      attributes: {
+        include: [
+          [Sequelize.literal('("fullPrice" - "price")'), 'diff'],
+        ]
+      },
+      where,
+      order: [
+        ['diff', 'DESC'],
+        ...order
+      ],
+      limit: to - from,
+      offset: from,
+    });
+
+    return unpackData(products);
+  };
+
+  getRecomended = async (
+    order: OrderItem[],
+    where: {[name: string]: string | number},
+    from: number,
+    to: number
+  ): Promise<Phone[]> => {
+    const products = await ProductModel.findAll({
+      where,
+      order,
+      limit: to - from,
+      offset: from,
     });
 
     return unpackData(products);
@@ -108,8 +185,8 @@ export class ProductService {
     return phones;
   };
 
-  addProduct = async (phones) => {
-    await ProductModel.create(phones);
+  addProduct = async (product) => {
+    await ProductModel.create(product);
   };
 
   seed = async () => {

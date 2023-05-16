@@ -1,6 +1,7 @@
 import {
   AllowNull,
   Column,
+  DefaultScope,
   ForeignKey,
   Model,
   Table,
@@ -10,7 +11,12 @@ import { Title } from './title.js';
 
 @Table({
   tableName: 'descriptions',
+  timestamps: false,
 })
+
+@DefaultScope(() => ({
+  attributes: ['text'],
+}))
 
 export class Description extends Model {
 
