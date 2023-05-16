@@ -51,7 +51,7 @@ const sendDbRequest = async(
     }
 
     fromValue = 0;
-    toValue = total - 1;
+    toValue = total;
   }
 
   const selectedPhones = await operation(
