@@ -1,18 +1,27 @@
 import {
   AllowNull,
   AutoIncrement,
+  BelongsTo,
   Column,
+  DefaultScope,
   ForeignKey,
+  HasMany,
   Model,
   PrimaryKey,
   Table,
 } from 'sequelize-typescript';
 import { DataTypes } from 'sequelize';
 import { Product } from './product.js';
+import { Description } from './description.js';
 
 @Table({
   tableName: 'titles',
+  timestamps: false,
 })
+
+@DefaultScope(() => ({
+  attributes: ['title'],
+}))
 
 export class Title extends Model {
   @PrimaryKey
@@ -34,4 +43,9 @@ export class Title extends Model {
     type: DataTypes.STRING,
   })
     title: string;
+
+  @HasMany(() => Description)
+    description: Description[];
+  // @BelongsTo(() => Product)
+  //   product: Product;
 }

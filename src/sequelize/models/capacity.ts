@@ -1,6 +1,8 @@
 import {
   AllowNull,
+  BelongsTo,
   Column,
+  DefaultScope,
   ForeignKey,
   Model,
   Table,
@@ -10,7 +12,12 @@ import { Product } from './product.js';
 
 @Table({
   tableName: 'capacities',
+  timestamps: false,
 })
+
+@DefaultScope(() => ({
+  attributes: ['capacity'],
+}))
 
 export class Capacity extends Model {
   @ForeignKey(() => Product)
@@ -24,4 +31,7 @@ export class Capacity extends Model {
     type: DataTypes.STRING,
   })
     capacity: string;
+
+  // @BelongsTo(() => Product)
+  //   product: Product;
 }

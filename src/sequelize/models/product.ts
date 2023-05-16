@@ -1,12 +1,18 @@
 import {
   AllowNull,
   Column,
+  HasMany,
   Model,
   PrimaryKey,
   Table,
 } from 'sequelize-typescript';
 import { DataTypes } from 'sequelize';
 import { Category } from '../../types/Category.js';
+import { Cell } from './cell.js';
+import { Capacity } from './capacity.js';
+import { Color } from './color.js';
+import { Image } from './image.js';
+import { Title } from './title.js';
 
 @Table({
   tableName: 'products',
@@ -98,4 +104,19 @@ export class Product extends Model {
     type: DataTypes.STRING,
   })
     zoom: string;
+
+  @HasMany(() => Cell)
+    cell: Cell[];
+    
+  @HasMany(() => Capacity)
+    capacityAvailable: Capacity[];
+
+  @HasMany(() => Color)
+    colorsAvailable: Color[];
+
+  @HasMany(() => Image)
+    images: Image[];
+
+  @HasMany(() => Title)
+    description: Title[];
 }

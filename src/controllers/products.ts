@@ -1,12 +1,10 @@
 // import fs, { PathLike, promises as fsPromises } from 'fs';
 import { Request, Response } from 'express';
-import { Phone } from '../types/Phone';
 import { ProductService } from '../sequelize/services/ProductService.js';
-import { OrderItem } from 'sequelize';
+import { OrderItem, Sequelize } from 'sequelize';
+import { Op } from 'sequelize';
 
 const productsDb = new ProductService();
-
-
 
 interface getPhonesQuery {
   from?: string;
@@ -15,14 +13,15 @@ interface getPhonesQuery {
   productType?: string; 
 }
 
-const getProducts = async (
+const sendDbRequest = async(
   req: Request<
     unknown,
     unknown,
     unknown,
     getPhonesQuery
   >,
-  res: Response
+  res: Response,
+  operation,
 ) => {
   const { from, to, sort, productType, ...filters } = req.query;  
 
@@ -30,10 +29,10 @@ const getProducts = async (
     filters['category'] = productType;
   }
 
-  const fromValue = Number(from);
-  const toValue = Number(to);
+
+  let fromValue = Number(from);
+  let toValue = Number(to);
   const total = await productsDb.getLength(filters);
-  let selectedPhones: Phone[] = [];
   const sortBy: OrderItem[] = [];
 
   if (sort !== undefined) {
@@ -50,23 +49,35 @@ const getProducts = async (
 
       return;
     }
-    selectedPhones = await productsDb.getProducts(
-      sortBy,
-      filters,
-    );
-  } else {
-    selectedPhones = await productsDb.getProductsPage(
-      sortBy,
-      filters,
-      fromValue,
-      toValue,
-    );
+
+    fromValue = 0;
+    toValue = total - 1;
   }
+
+  const selectedPhones = await operation(
+    sortBy,
+    filters,
+    fromValue,
+    toValue,
+  );
 
   res.json({
     total,
     data: selectedPhones,
   });
+};
+
+const getProducts = async (
+  req: Request<
+    unknown,
+    unknown,
+    unknown,
+    getPhonesQuery
+  >,
+  res: Response
+) => {
+  
+  sendDbRequest(req, res, productsDb.getProductsPage);
 };
 
 const getProductById = async (req: Request, res: Response) => {
@@ -78,12 +89,9 @@ const getProductById = async (req: Request, res: Response) => {
     return;
   }
 
-  const phones = await productsDb.getProducts(
-    [],
-    { id: productId },
-  );
+  const phone = await productsDb.getProductById(productId);
 
-  if (phones.length < 1) {
+  if (!phone) {
     res.sendStatus(404);
 
     return;
@@ -96,8 +104,8 @@ const getProductById = async (req: Request, res: Response) => {
   const images = await productsDb.getImages(productId);
   const titles = await productsDb.getTitles(productId);
 
-  const phone = {
-    ...phones[0],
+  const fullPhone = {
+    ...phone,
     cell,
     capacityAvailable,
     colorsAvailable,
@@ -108,14 +116,14 @@ const getProductById = async (req: Request, res: Response) => {
   for (const { title, id } of titles) {
     const text = await productsDb.getDescription(id);
 
-    phone.description.push({
+    fullPhone.description.push({
       title,
       text,
     });
   }
   
 
-  res.json(phone);
+  res.json(fullPhone);
 };
 
 const getNewProducts = (
@@ -128,7 +136,7 @@ const getNewProducts = (
   res: Response
 ) => {
   req.query.sort = 'year:desc';
-  getProducts(req, res);
+  sendDbRequest(req, res, productsDb.getProductsPage);
 };
 
 const getHotDeals = (
@@ -140,19 +148,35 @@ const getHotDeals = (
   >,
   res: Response
 ) => {
-  getProducts(req, res);
+  sendDbRequest(req, res, productsDb.getDiscounts);
 };
 
-const getRecomended = (
-  req: Request<
-    unknown,
-    unknown,
-    unknown,
-    getPhonesQuery
-  >,
-  res: Response
+const getRecomended = async (
+  req: Request,
+  res: Response,
 ) => {
-  getProducts(req, res);
+
+  const { productId } = req.params;
+
+  if (productId === undefined) {
+    res.sendStatus(400);
+
+    return;
+  }
+
+  const phone = await productsDb.getProductById(productId);
+  if (!phone) {
+    res.sendStatus(404);
+
+    return;
+  }
+  req.query.namespaceId = phone.namespaceId;
+
+  req.query.id = {
+    [Op.not]: phone.id
+  };
+
+  sendDbRequest(req, res, productsDb.getRecomended);
 };
 
 export default {
