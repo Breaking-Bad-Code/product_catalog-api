@@ -1,7 +1,7 @@
 // import fs, { PathLike, promises as fsPromises } from 'fs';
 import { Request, Response } from 'express';
 import { ProductService } from '../sequelize/services/ProductService.js';
-import { OrderItem, Sequelize } from 'sequelize';
+import { OrderItem } from 'sequelize';
 import { Op } from 'sequelize';
 
 const productsDb = new ProductService();
@@ -105,7 +105,7 @@ const getProductById = async (req: Request, res: Response) => {
   const titles = await productsDb.getTitles(productId);
 
   const fullPhone = {
-    ...phone,
+    ...phone.dataValues,
     cell,
     capacityAvailable,
     colorsAvailable,
