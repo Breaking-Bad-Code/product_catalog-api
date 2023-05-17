@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 import { ProductService } from '../sequelize/services/ProductService.js';
 import { OrderItem } from 'sequelize';
 import { Op } from 'sequelize';
+import { Phone } from '../types/Phone.js';
 
 const productsDb = new ProductService();
 
@@ -11,6 +12,7 @@ interface getPhonesQuery {
   to?: string;
   sort?: string;
   productType?: string; 
+  searchQuery?: string;
 }
 
 const sendDbRequest = async(
@@ -23,12 +25,25 @@ const sendDbRequest = async(
   res: Response,
   operation,
 ) => {
-  const { from, to, sort, productType, ...filters } = req.query;  
+  const {
+    from,
+    to,
+    sort,
+    productType,
+    searchQuery,
+    ...filters
+  } = req.query;  
+
 
   if (productType !== undefined) {
     filters['category'] = productType;
   }
 
+  if (searchQuery !== undefined) {
+    filters['name'] = {
+      [Op.iLike]: `%${searchQuery}%`
+    };
+  }
 
   let fromValue = Number(from);
   let toValue = Number(to);
