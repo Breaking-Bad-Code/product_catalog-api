@@ -3,7 +3,6 @@ import { Request, Response } from 'express';
 import { ProductService } from '../sequelize/services/ProductService.js';
 import { OrderItem } from 'sequelize';
 import { Op } from 'sequelize';
-import { Phone } from '../types/Phone.js';
 
 const productsDb = new ProductService();
 

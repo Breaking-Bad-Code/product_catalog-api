@@ -4,11 +4,11 @@ import { Product as ProductModel } from '../models/product.js';
 import { promises as fsPromises } from 'fs';
 import path from 'path';
 import { PhoneDetails } from '../../types/PhoneDetails.js';
-import { Cell, Cell as CellModel } from '../models/cell.js';
-import { Color, Color as ColorModel } from '../models/color.js';
-import { Capacity, Capacity as CapacityModel } from '../models/capacity.js';
-import { Image, Image as ImageModel } from '../models/image.js';
-import { Title, Title as TitleModel } from '../models/title.js';
+import {  Cell as CellModel } from '../models/cell.js';
+import {  Color as ColorModel } from '../models/color.js';
+import {  Capacity as CapacityModel } from '../models/capacity.js';
+import {  Image as ImageModel } from '../models/image.js';
+import {  Title as TitleModel } from '../models/title.js';
 import { Description as DescriptionModel } from '../models/description.js';
 const __dirname = path.resolve();
 
