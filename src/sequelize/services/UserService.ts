@@ -28,7 +28,14 @@ export class UserService {
   };
 
   addUser = async (user) => {
-    await UserModel.findOrCreate(user);
+    await UserModel.findOrCreate({
+      where: {
+        googleId: user.googleId,
+      },
+      defaults: {
+        ...user,
+      },
+    });
   };
 
   getUserOrders = async (userId) => {
