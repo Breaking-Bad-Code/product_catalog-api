@@ -1,5 +1,5 @@
-import { Request, Response } from "express";
-import { UserService } from "../sequelize/services/UserService";
+import { Request, Response } from 'express';
+import { UserService } from '../sequelize/services/UserService.js';
 
 const userDb = new UserService();
 

@@ -1,8 +1,10 @@
-import { Cart as CartModel } from '../models/cart';
-import { Favourites as FavouritesModel } from '../models/favourites';
-import { Order as OrderModel } from '../models/order';
-import { OrderPosition as OrderPositionModel } from '../models/orderPosition';
-import { User as UserModel } from '../models/user';
+import { Cart as CartModel } from '../models/cart.js';
+import { Favourites as FavouritesModel } from '../models/favourites.js';
+import { Order as OrderModel } from '../models/order.js';
+import {
+  OrderPosition as OrderPositionModel
+} from '../models/orderPosition.js';
+import { User as UserModel } from '../models/user.js';
 
     
 function unpackData(responce) {

@@ -5,6 +5,7 @@ import { router as phoneRouter } from './routers/phones.js';
 import { router as productsRouter } from './routers/products.js';
 import { connect } from './sequelize/db.js';
 import { ProductService } from './sequelize/services/ProductService.js';
+import { router as userRouter } from './routers/user.js';
 
 const app: Express = express();
 const PORT = process.env.PORT || 3000;
@@ -23,6 +24,7 @@ app.use(cors());
 app.use(express.static('public'));
 app.use('/phones', phoneRouter);
 app.use('/products', productsRouter);
+app.use('/users', userRouter);
 
 app.get('/', (req: Request, res: Response) => {
   res.sendFile('index.html');
