@@ -18,7 +18,9 @@ const getOrders = async (
 ) => {
   const { userId } = req.body;
 
-  if (userId === undefined) {
+  console.log(userId);
+
+  if (userId === undefined || userId === 'undefined') {
     res.sendStatus(400);
 
     return;
@@ -41,9 +43,14 @@ const createOrder = async (
     return;
   }
 
+  order.data = order.data.map(({ id, quantity }) => ({
+    phoneId: id,
+    quantity,
+  }));
+
   await userDb.addUserOrder(userId, order);
 
-  res.sendStatus(200);
+  res.json({ status: 200 });
 };
 
 const getOrderDetails = async (
@@ -67,7 +74,7 @@ const getFavourites = async (
   req: Request,
   res: Response,
 ) => {
-  const { userId } = req.body;
+  const { userId, operation, data } = req.body;
 
   if (userId === undefined) {
     res.sendStatus(400);
@@ -75,17 +82,29 @@ const getFavourites = async (
     return;
   }
 
-  // const orders = await userDb.get(userId);
+  if (operation === 'get') {
+    const favourites = await userDb.getUserFavourites(userId);
+    
+    res.json(favourites);
 
-  // res.json(orders);
-  res.sendStatus(200);
+    return;
+  } else if (operation === 'post' && Array.isArray(data)) {
+    
+    await userDb.saveUserFavourites(userId, data);
+
+    res.json({ status: 200 });
+
+    return;
+  }
+
+  res.sendStatus(404);
 };
 
 const getCart = async (
   req: Request,
   res: Response,
 ) => {
-  const { userId } = req.body;
+  const { userId, operation, data } = req.body;
 
   if (userId === undefined) {
     res.sendStatus(400);
@@ -93,44 +112,26 @@ const getCart = async (
     return;
   }
 
-  // const orders = await userDb.get(userId);
+  if (operation === 'get') {
+    const cart = await userDb.getUserCart(userId);
 
-  // res.json(orders);
-  res.sendStatus(200);
-};
+    res.json(cart);
 
-const saveFavourites = async (
-  req: Request,
-  res: Response,
-) => {
-  const { userId, favourites } = req.body;
+    return;
+  } else if (operation === 'post' && Array.isArray(data)) {
+    const correctData = data.map(({ id, quantity }) => ({
+      phoneId: id,
+      quantity,
+    }));
 
-  if (userId === undefined || favourites === undefined) {
-    res.sendStatus(400);
+    await userDb.saveUserCart(userId, correctData);
+
+    res.json({ status: 200 });
 
     return;
   }
 
-  // await userDb.addUserOrder(userId, favourites);
-
-  res.sendStatus(200);
-};
-
-const saveCart = async (
-  req: Request,
-  res: Response,
-) => {
-  const { userId, cart } = req.body;
-
-  if (userId === undefined || cart === undefined) {
-    res.sendStatus(400);
-
-    return;
-  }
-
-  // await userDb.addUserOrder(userId, cart);
-
-  res.sendStatus(200);
+  res.sendStatus(404);
 };
 
 export default {
@@ -140,6 +141,4 @@ export default {
   getOrders,
   createOrder,
   getOrderDetails,
-  saveFavourites,
-  saveCart,
 };

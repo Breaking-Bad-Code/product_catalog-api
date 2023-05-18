@@ -1,10 +1,8 @@
 import {
-  AllowNull,
   Column,
+  DefaultScope,
   ForeignKey,
-  HasMany,
   Model,
-  PrimaryKey,
   Table,
 } from 'sequelize-typescript';
 import { DataTypes } from 'sequelize';
@@ -14,6 +12,9 @@ import { User } from './user.js';
   tableName: 'favourites',
 })
 
+@DefaultScope(() => ({
+  attributes: ['phoneId'],
+}))
 
 export class Favourites extends Model {
   @ForeignKey(() => User)
