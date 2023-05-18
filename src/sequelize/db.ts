@@ -50,11 +50,16 @@ export const connect = async () => {
     // await Image.sync();
     // await Title.sync();
     // await Description.sync();
-    await User.sync();
-    await Order.sync();
-    await OrderPosition.sync();
-    await Favourites.sync();
-    await Cart.sync();
+    // await Favourites.drop();
+
+    // await OrderPosition.drop();
+    // await Cart.drop();
+
+    // await User.sync();
+    // await Order.sync();
+    // await OrderPosition.sync();
+    // await Favourites.sync();
+    // await Cart.sync();
 
   } catch (error) {
     console.log(error);

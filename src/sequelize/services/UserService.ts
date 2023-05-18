@@ -69,7 +69,7 @@ export class UserService {
       total,
     });
 
-    const orderId = unpackData(createdOrder).id;
+    const orderId = createdOrder.dataValues.id;
 
     await OrderPositionModel.bulkCreate(
       data.map(
@@ -94,12 +94,33 @@ export class UserService {
     });
   };
 
+  getUserFavourites = async (userId) => {
+    const userFavourites = await FavouritesModel.findAll({
+      where: {
+        userId
+      },      
+    });
+
+    return getValues(unpackData(userFavourites));
+  };
+
+  getUserCart = async (userId) => {
+    const userCart = await CartModel.findAll({
+      attributes: ['quantity', ['phoneId', 'id']],
+      where: {
+        userId
+      },      
+    });
+
+    return unpackData(userCart);
+  };
+
   saveUserFavourites = async (userId, favourites) => {
     await this.clearUserFavourites(userId);
 
     await FavouritesModel.bulkCreate(
       favourites.map(
-        prod => ({...prod, userId})
+        phoneId => ({ phoneId, userId})
       ),
     );
   };

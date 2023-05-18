@@ -1,5 +1,6 @@
 import {
   AllowNull,
+  AutoIncrement,
   Column,
   Default,
   ForeignKey,
@@ -19,6 +20,7 @@ import { OrderPosition } from './orderPosition.js';
 
 export class Order extends Model {
   @PrimaryKey
+  @AutoIncrement
   @AllowNull(false)
   @Column({
     type: DataTypes.INTEGER,

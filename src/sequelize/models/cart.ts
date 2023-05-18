@@ -1,5 +1,6 @@
 import {
   Column,
+  DefaultScope,
   ForeignKey,
   Model,
   Table,
@@ -11,13 +12,17 @@ import { User } from './user.js';
   tableName: 'cart',
 })
 
+@DefaultScope(() => ({
+  attributes: ['phoneId', 'quantity'],
+}))
+
 export class Cart extends Model {
 
   @ForeignKey(() => User)
   @Column({
-    type: DataTypes.INTEGER,
+    type: DataTypes.STRING,
   })
-    orderId: number;
+    userId: string;
 
   @Column({
     type: DataTypes.INTEGER,
