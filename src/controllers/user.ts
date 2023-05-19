@@ -28,7 +28,17 @@ const getOrders = async (
 
   const orders = await userDb.getUserOrders(userId);
 
-  res.json(orders);
+  res.json(orders.map(({
+    id,
+    status,
+    total,
+    updatetAt,
+  }) => ({
+    orderId: id,
+    status,
+    total,
+    updatetAt,
+  })));
 };
 
 const createOrder = async (
@@ -59,13 +69,13 @@ const getOrderDetails = async (
 ) => {
   const { orderId } = req.params;
 
-  if (orderId === undefined) {
+  if (orderId === undefined || isNaN(Number(orderId))) {
     res.sendStatus(400);
 
     return;
   }
 
-  const positions = await userDb.getOrderPositions(orderId);
+  const positions = await userDb.getOrderPositions(Number(orderId));
 
   res.json(positions);
 };
