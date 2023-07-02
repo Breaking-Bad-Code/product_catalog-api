@@ -84,7 +84,7 @@ export class ProductService {
     const products = await ProductModel.findAll({
       attributes: {
         include: [
-          [Sequelize.literal('("fullPrice" - "price")'), 'diff'],
+          [Sequelize.literal('("fullPrice" - "price") / "fullPrice"'), 'diff'],
         ]
       },
       where,
